@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Coin List</title>
+{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto py-16 px-4">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Coin List</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {% for coin in coins %}
+    <a href="{% url 'coin-detail' coin.pk %}" class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 block">
+            <div class="p-6 text-center">
+                {% if coin.image %}
+                <img src="{{ coin.image.url }}" alt="{{ coin.name }}" class="w-20 h-20 rounded-full object-cover mx-auto mb-4 shadow-lg border-2 border-yellow-400" />
+                {% else %}
+                <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <span class="text-3xl text-white font-bold">🪙</span>
+                </div>
+                {% endif %}
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ coin.name }}</h2>
+                <p class="text-gray-600 mb-2">{{ coin.year }} - {{ coin.country }}</p>
+                <p class="text-gray-600 mb-2">Value: ${{ coin.value }}</p>
+                <p class="text-gray-500"><small>{{ coin.description }}</small></p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

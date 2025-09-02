@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block head %}<title>Login</title>{% endblock %}
+{% block content %}
+<section class="max-w-md mx-auto py-16 px-4">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800">Login</h1>
+  <form method="post" class="bg-white rounded-xl shadow p-8 space-y-6">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div>
+        <label class="block font-semibold mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ field.errors|striptags }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200 w-full">Login</button>
+  </form>
+</section>
+{% endblock %}

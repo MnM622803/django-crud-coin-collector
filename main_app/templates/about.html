@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>About Coin Collector</title>
+{% endblock %}
+{% block content %}
+<section class="max-w-3xl mx-auto py-16 px-4 text-center">
+    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+        <span class="text-3xl text-white">🪙</span>
+    </div>
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">About Coin Collector</h1>
+    <p class="text-lg text-gray-600 mb-8">Coin Collector is your digital vault for organizing, ranking, and celebrating your coin collection. Whether you're a hobbyist or a serious numismatist, our app helps you track values, add notes, and preserve the story behind every coin.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div class="bg-white rounded-xl shadow p-6">
+            <h2 class="text-xl font-semibold text-purple-700 mb-2">Why Use Coin Collector?</h2>
+            <ul class="list-disc list-inside text-left text-gray-600">
+                <li>Easy coin management</li>
+                <li>Global ranking system</li>
+                <li>Modern, responsive design</li>
+                <li>Secure and private</li>
+            </ul>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6">
+            <h2 class="text-xl font-semibold text-purple-700 mb-2">Get Started</h2>
+            <ul class="list-disc list-inside text-left text-gray-600">
+                <li>Add your first coin</li>
+                <li>Explore featured coins</li>
+                <li>Track your collection's value</li>
+                <li>Share your collection with friends</li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

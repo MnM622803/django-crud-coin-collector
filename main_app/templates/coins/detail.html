@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>Coin Details</title>
+    <link rel="stylesheet" href="{% static 'css/coins/coin-detail.css' %}">
+{% endblock %}
+{% block content %}
+<section class="max-w-4xl mx-auto py-16 px-4">
+    <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="flex-shrink-0">
+                        {% if coin.image %}
+                            <img src="{{ coin.image.url }}" alt="{{ coin.name }}" class="w-40 h-40 object-cover rounded-full shadow-2xl mb-8 md:mb-0 border-4 border-yellow-400" />
+                        {% else %}
+                            <div class="w-40 h-40 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center shadow-2xl mb-8 md:mb-0">
+                                    <span class="text-6xl text-white font-bold">🪙</span>
+                            </div>
+                        {% endif %}
+                </div>
+        <div class="flex-1">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ coin.name }}</h1>
+            <h2 class="text-xl text-gray-600 mb-4">{{ coin.year }} - {{ coin.country }}</h2>
+            <p class="text-lg text-gray-700 mb-4">Value: ${{ coin.value }}</p>
+            <p class="text-gray-500 mb-8">{{ coin.description }}</p>
+            {% if user.is_authenticated and coin.owner == user %}
+            <div class="flex gap-4">
+                <a href="{% url 'coin-update' coin.pk %}" class="bg-yellow-400 text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition-colors duration-200">Edit</a>
+                <a href="{% url 'coin-delete' coin.pk %}" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mt-16">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Global Ranks</h2>
+                {% if user.is_authenticated and coin.owner == user %}
+        <form method="post" action="{% url 'add-globalrank' coin.id %}" class="mb-8 bg-white rounded-xl shadow p-8">
+            {% csrf_token %}
+            {{ globalrank_form.as_p }}
+            <button type="submit" class="mt-4 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200">Add Global Rank</button>
+        </form>
+        {% else %}
+        <div class="mb-8 bg-white rounded-xl shadow p-8 text-center">
+                        {% if not user.is_authenticated %}
+                            <p class="text-gray-600">Sign in to add global ranks.</p>
+                            <a href="{% url 'login' %}" class="inline-block mt-4 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200">Login</a>
+                        {% else %}
+                            <p class="text-gray-600">Only the owner can add global ranks.</p>
+                        {% endif %}
+        </div>
+        {% endif %}
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Past Global Ranks</h3>
+        {% if coin.globalrank_set.all.count %}
+        <table class="w-full text-left bg-white rounded-xl shadow mb-8">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 bg-gray-100">Date</th>
+                    <th class="py-2 px-4 bg-gray-100">Rank</th>
+                    <th class="py-2 px-4 bg-gray-100">Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for globalrank in coin.globalrank_set.all %}
+                <tr>
+                    <td class="py-2 px-4">{{globalrank.date}}</td>
+                    <td class="py-2 px-4">{{globalrank.rank}}</td>
+                    <td class="py-2 px-4">{{globalrank.source}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="bg-yellow-50 text-yellow-800 rounded-lg p-4">
+            <p>⚠️ {{coin.name}} has no global ranks!</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

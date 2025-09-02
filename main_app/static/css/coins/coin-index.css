@@ -1,0 +1,35 @@
+/* Coin Index Page Styles */
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: 300px;
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.card-content {
+  padding: 1.5rem;
+}
+.card-img-container img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.card-content p {
+  margin-bottom: 0.5rem;
+}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Coin Collector - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .coin-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="coin-animation inline-block mb-8">
+                <div class="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-2xl">
+                    <span class="text-4xl">🪙</span>
+                </div>
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-6">Welcome to Your Coin Collection</h1>
+            <p class="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">Discover, organize, and showcase your precious coin collection. Track values, add notes, and preserve the history of each unique piece.</p>
+            <button onclick="scrollToCollection()" class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-colors duration-200 shadow-lg">View My Collection</button>
+        </div>
+    </section>
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">{{ total_coins }}</h3>
+                    <p class="text-gray-600">Total Coins</p>
+                </div>
+                <div class="p-6">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">💰</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">${{ total_value|floatformat:2 }}</h3>
+                    <p class="text-gray-600">Collection Value</p>
+                </div>
+                <div class="p-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🌍</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">{{ unique_countries }}</h3>
+                    <p class="text-gray-600">Countries</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Coins Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Featured Coins</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {% for coin in featured_coins %}
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div class="p-6 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <span class="text-3xl text-white font-bold">{{ coin.value|floatformat:0 }}</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ coin.name }}</h3>
+                        <p class="text-gray-600 mb-4">{{ coin.description|truncatewords:10 }}</p>
+                        <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">${{ coin.value|floatformat:2 }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Collection Preview Section -->
+    <section id="collection" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Collection</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Organize your coins by era, country, or type. Add detailed information, photos, and track their value over time.</p>
+            </div>
+            <div class="bg-gray-50 rounded-2xl p-8 text-center">
+                <div class="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-4xl">📚</span>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">Collection Management</h3>
+                <p class="text-gray-600 mb-6">Start building your digital coin catalog. Add photos, descriptions, purchase dates, and current values.</p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'coin-create' %}" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200 inline-block">Add New Coin</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200 inline-block">Sign in to Add Coins</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center">
+                    <span class="text-white text-sm">🪙</span>
+                </div>
+                <span class="text-lg font-semibold">Coin Collector</span>
+            </div>
+            <p class="text-gray-400">Preserve the history, one coin at a time.</p>
+        </div>
+    </footer>
+    <script>
+        function scrollToCollection() {
+            document.getElementById('collection').scrollIntoView({ behavior: 'smooth' });
+        }
+        function addNewCoin() {
+            alert('Add New Coin feature coming soon! This would open a form to add coin details, photos, and information to your collection.');
+        }
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        window.addEventListener('scroll', function() {
+            const sections = ['home', 'collection'];
+            const navLinks = document.querySelectorAll('nav a');
+            let current = '';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        current = section;
+                    }
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('text-purple-600', 'border-b-2', 'border-purple-600', 'font-semibold');
+                link.classList.add('text-gray-600', 'font-medium');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.remove('text-gray-600', 'font-medium');
+                    link.classList.add('text-purple-600', 'border-b-2', 'border-purple-600', 'font-semibold');
+                }
+            });
+        });
+    </script>
+{% endblock %}

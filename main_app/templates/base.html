@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Coin Collector{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+
+
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
+                        <span class="text-white text-xl font-bold">🪙</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800">Coin Collector</span>
+                </div>
+                <!-- Navigation Links -->
+                <div class="flex space-x-8">
+                    <a href="/" class="text-purple-600 font-semibold border-b-2 border-purple-600 pb-1 transition-colors duration-200">Home</a>
+                    <a href="{% url 'coin-index' %}" class="text-gray-600 hover:text-purple-600 font-medium transition-colors duration-200">Collection</a>
+                    <a href="{% url 'about' %}" class="text-gray-600 hover:text-purple-600 font-medium transition-colors duration-200">About</a>
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-gray-600 hover:text-red-600 font-medium transition-colors duration-200">Logout</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-gray-600 hover:text-purple-600 font-medium transition-colors duration-200">Login</a>
+                        <a href="{% url 'signup' %}" class="text-gray-600 hover:text-purple-600 font-medium transition-colors duration-200">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <div class="w-8 h-8 gradient-bg rounded-full flex items-center justify-center">
+                    <span class="text-white text-sm">🪙</span>
+                </div>
+                <span class="text-lg font-semibold">Coin Collector</span>
+            </div>
+            <p class="text-gray-400">Preserve the history, one coin at a time.</p>
+        </div>
+    </footer>
+</body>
+</html>
