@@ -17,14 +17,12 @@ try:
 except ImportError:
     dj_database_url = None  # Fallback; only required on Heroku
 
-# Optional python-dotenv import (won't break if package missing)
 try:
     from dotenv import load_dotenv  # type: ignore
 except ImportError:  # Fallback no-op if library not installed
     def load_dotenv(*args, **kwargs):
         return False
 
-# Load environment variables from a .env file if present
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +30,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.getenv('SECRET_KEY') or 'dev-insecure-secret-key-change-me'
-# Enable debug only when not on Heroku
 DEBUG = 'ON_HEROKU' not in os.environ
 
 if not SECRET_KEY and not DEBUG:
@@ -40,7 +37,6 @@ if not SECRET_KEY and not DEBUG:
 
 ALLOWED_HOSTS = ["*"]
 
-# Application definition
 
 INSTALLED_APPS = [
     'main_app',
@@ -83,8 +79,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'catcollector.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 if 'ON_HEROKU' in os.environ:
     if dj_database_url is None:
@@ -98,7 +92,6 @@ if 'ON_HEROKU' in os.environ:
         )
     }
 else:
-    # Local / non-Heroku environment (default to Postgres if specified, else sqlite3)
     local_engine = os.getenv('DB_ENGINE', 'django.db.backends.sqlite3')
     local_name = os.getenv('DB_NAME', os.path.join(BASE_DIR, 'db.sqlite3'))
     DATABASES = {
@@ -113,14 +106,11 @@ else:
     }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = []  # Disabled per user preference (less secure)
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -131,20 +121,15 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Authentication redirects
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 

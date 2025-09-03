@@ -53,7 +53,6 @@ def add_globalrank(request, coin_id):
         new_globalrank.save()
     return redirect('coin-detail', coin_id=coin_id)
 
-# CLASS BASED VIEWS
 class CoinCreate(LoginRequiredMixin, CreateView):
     model = Coin
     fields = ['name','year','country','description','value','image']
@@ -63,7 +62,6 @@ class CoinCreate(LoginRequiredMixin, CreateView):
 
 class CoinUpdate(LoginRequiredMixin, UpdateView):
     model = Coin
-    # Let's disallow the renaming of a coin by excluding the name field!
     fields = ['year', 'country', 'description', 'value', 'image']
     def get_queryset(self):
         return Coin.objects.filter(owner=self.request.user)
@@ -74,7 +72,6 @@ class CoinDelete(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         return Coin.objects.filter(owner=self.request.user)
 
-# AUTH VIEWS
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

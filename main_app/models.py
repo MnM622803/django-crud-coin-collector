@@ -34,4 +34,4 @@ class GlobalRank(models.Model):
     def __str__(self):
         return f"Rank {self.rank} for {self.coin.name} on {self.date}"
     class Meta:
-        ordering = ['-date']  # Newest rankings appear first
+        ordering = ['-date']  

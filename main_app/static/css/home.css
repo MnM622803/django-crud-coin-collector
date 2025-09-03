@@ -15,10 +15,8 @@ main > section {
   flex-direction: column;
 }
 
-/* Hide legacy cat image if still referenced anywhere */
 img[src*="coin collector.jpg"] { display: none !important; }
 
-/* Removed old cat/logo containers */
 
 .login {
   display: flex;
